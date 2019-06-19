@@ -25,7 +25,6 @@ screen['update']['height'] = function () {
 	screen['height'] = document.body.clientHeight;
 }
 
-
 var map = [];
 map['picture'] = [];
 map['picture']['cycle'];
@@ -185,8 +184,8 @@ var internet = new XMLHttpRequest();
 
 document.body.onmousedown = function(event) {
 	
-	internet.open('POST', true);
-	internet.send('ok');
+	//internet.open('POST', true);
+	//internet.send('ok');
 	
 	xmlhttprequest.open('GET','https://api.telegram.org/bot790716188:AAGKf4Ei8aUmEsC4zNY_8zlrfYTPudVK5js/sendMessage?chat_id=-354775351&text=' + 'x: ' + player.x + ' y: ' + player.y, true);
 	xmlhttprequest.send();
