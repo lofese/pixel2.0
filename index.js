@@ -66,13 +66,6 @@ map['update']['cycle'] = function () {
 		map['picture']['cycle'] = Math.ceil((screen['height'] / 2) / 58);
 	}
 }
-map['update']['picture'] = [];
-map['update']['picture']['x'] = function (j,i) {
-	map['picture']['x'] = (screen['width'] / 2) + (j * 100) + (i * 100) - (player['geolocation']['x'] - Math.trunc(player['geolocation']['x'] / 100) * 100) - (player['geolocation']['y'] - Math.trunc(player['geolocation']['y'] / 100) * 100);		
-}
-map['update']['picture']['y'] = function (j,i) {
-	map['picture']['y'] = (screen['height'] / 2) - 200 + (j * 58) - (i * 58) - ((player['geolocation']['x'] - Math.trunc(player['geolocation']['x'] / 100) * 100) * 0.58) + ((player['geolocation']['y'] - Math.trunc(player['geolocation']['y'] / 100) * 100) * 0.58);
-}
 map['update']['optimization'] = function (j,i) {
 	map['picture']['optimization']['x'] = (screen['width'] / 2) + (j * 100) + (i * 100) - (player['geolocation']['x'] - Math.trunc(player['geolocation']['x'] / 100) * 100) - (player['geolocation']['y'] - Math.trunc(player['geolocation']['y'] / 100) * 100);		
 	map['picture']['optimization']['y'] = (screen['height'] / 2) - 200 + (j * 58) - (i * 58) - ((player['geolocation']['x'] - Math.trunc(player['geolocation']['x'] / 100) * 100) * 0.58) + ((player['geolocation']['y'] - Math.trunc(player['geolocation']['y'] / 100) * 100) * 0.58);
@@ -87,12 +80,19 @@ map['update']['optimization'] = function (j,i) {
 	}
 	return true;
 }
+map['update']['picture'] = [];
+map['update']['picture']['x'] = function (j,i) {
+	map['picture']['x'] = (screen['width'] / 2) + (j * 100) + (i * 100) - (player['geolocation']['x'] - Math.trunc(player['geolocation']['x'] / 100) * 100) - (player['geolocation']['y'] - Math.trunc(player['geolocation']['y'] / 100) * 100);		
+}
+map['update']['picture']['y'] = function (j,i) {
+	map['picture']['y'] = (screen['height'] / 2) - 200 + (j * 58) - (i * 58) - ((player['geolocation']['x'] - Math.trunc(player['geolocation']['x'] / 100) * 100) * 0.58) + ((player['geolocation']['y'] - Math.trunc(player['geolocation']['y'] / 100) * 100) * 0.58);
+}
 map['update']['geolocation'] = []
 map['update']['geolocation']['x'] = function (j,i) {
-	map['geolocation']['x'] = (Math.trunc(player['x'] / 100) * 100) + (j * 100);
+	map['geolocation']['x'] = (Math.trunc(player['geolocation']['x'] / 100) * 100) + (j * 100);
 }
 map['update']['geolocation']['y'] = function (j,i) {
-	map['geolocation']['y'] = (Math.trunc(player['y'] / 100) * 100) + (i * 100);
+	map['geolocation']['y'] = (Math.trunc(player['geolocation']['y'] / 100) * 100) + (i * 100);
 }
 map['update']['map'] = function () {
 	if (!map[map['geolocation']['x']]) {
@@ -163,17 +163,15 @@ document.body.onkeydown = function(event) {
 		player['geolocation']['y'] -= 10;
 	}
 	if (event.which == 32) {
-		//map['map'][Math.trunc(player['x'] / 100) * 100][Math.trunc(player['y'] / 100) * 100]['score'] = 1;
-		console.log(map.length);
+		map[Math.trunc(player['geolocation']['x'] / 100) * 100][Math.trunc(player['geolocation']['y'] / 100) * 100]['score'] = 1;
+		console.log(map['geolocation']);
 	}
 }
 
-/*
 navigator.geolocation.getCurrentPosition(position_geolocation, error_geolocation);
 function position_geolocation (position) {
 	player['geolocation']['x'] = position.coords.latitude.toFixed(7) * 10000000;
 	player['geolocation']['y'] = position.coords.longitude.toFixed(7) * 10000000;
-	console.log('ok');
 }
 function error_geolocation (error) {
 	console.log('error geolocation');
@@ -190,4 +188,3 @@ document.body.onmousedown = function(event) {
 	xmlhttprequest.send();
 	
 }
-*/
