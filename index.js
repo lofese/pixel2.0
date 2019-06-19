@@ -181,10 +181,12 @@ var internet = new XMLHttpRequest();
 
 document.body.onmousedown = function(event) {
 	
-	internet.open('POST', true);
-	internet.send('ok');
+	//internet.open('POST', true);
+	//internet.send('ok');
 	
-	xmlhttprequest.open('GET','https://api.telegram.org/bot790716188:AAGKf4Ei8aUmEsC4zNY_8zlrfYTPudVK5js/sendMessage?chat_id=-354775351&text=' + 'x: ' + player.x + ' y: ' + player.y, true);
-	xmlhttprequest.send();
+	//xmlhttprequest.open('GET','https://api.telegram.org/bot790716188:AAGKf4Ei8aUmEsC4zNY_8zlrfYTPudVK5js/sendMessage?chat_id=-354775351&text=' + 'x: ' + player.x + ' y: ' + player.y, true);
+	//xmlhttprequest.send();
 	
+	map[Math.trunc(player['geolocation']['x'] / 100) * 100][Math.trunc(player['geolocation']['y'] / 100) * 100]['score'] = 1;
+	console.log(map['geolocation']);
 }
