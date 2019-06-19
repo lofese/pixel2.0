@@ -28,6 +28,9 @@ screen['update']['height'] = function () {
 var map = [];
 map['picture'] = [];
 map['picture']['cycle'];
+map['picture']['optimization'] = [];
+map['picture']['optimization']['x'];
+map['picture']['optimization']['y'];
 map['picture']['x'];
 map['picture']['y'];
 for (var i = 0; i <= 1; i++) {
@@ -44,18 +47,11 @@ map['update']['timer'] = function () {
 	map['update']['cycle']();
 	for (var i = - map['picture']['cycle']; i <= map['picture']['cycle']; i++) {
 		for (var j = - map['picture']['cycle']; j <= map['picture']['cycle']; j++) {
-			map['update']['picture']['x'](j,i);
-			map['update']['picture']['y'](j,i);
-			//map['update']['optimization']();
-			if (map['picture']['x'] <= - 200) {
-				continue;
-			} else if (map['picture']['x'] >= screen['width']) {
-				continue;
-			} else if (map['picture']['y'] <= - 200 - 58) {
-				continue;
-			} else if (map['picture']['y'] >= screen['height'] - 200 + 58) {
+			if (map['update']['optimization'](j,i) == false) {
 				continue;
 			}
+			map['update']['picture']['x'](j,i);
+			map['update']['picture']['y'](j,i);
 			map['update']['geolocation']['x'](j,i);
 			map['update']['geolocation']['y'](j,i);
 			map['update']['map']();
@@ -77,16 +73,19 @@ map['update']['picture']['x'] = function (j,i) {
 map['update']['picture']['y'] = function (j,i) {
 	map['picture']['y'] = (screen['height'] / 2) - 200 + (j * 58) - (i * 58) - ((player['geolocation']['x'] - Math.trunc(player['geolocation']['x'] / 100) * 100) * 0.58) + ((player['geolocation']['y'] - Math.trunc(player['geolocation']['y'] / 100) * 100) * 0.58);
 }
-map['update']['optimization'] = function () {
-	if (map['picture']['x'] <= - 200) {
-		continue;
-	} else if (map['picture']['x'] >= screen['width']) {
-		continue;
-	} else if (map['picture']['y'] <= - 200 - 58) {
-		continue;
-	} else if (map['picture']['y'] >= screen['height'] - 200 + 58) {
-		continue;
+map['update']['optimization'] = function (j,i) {
+	map['picture']['optimization']['x'] = (screen['width'] / 2) + (j * 100) + (i * 100) - (player['geolocation']['x'] - Math.trunc(player['geolocation']['x'] / 100) * 100) - (player['geolocation']['y'] - Math.trunc(player['geolocation']['y'] / 100) * 100);		
+	map['picture']['optimization']['y'] = (screen['height'] / 2) - 200 + (j * 58) - (i * 58) - ((player['geolocation']['x'] - Math.trunc(player['geolocation']['x'] / 100) * 100) * 0.58) + ((player['geolocation']['y'] - Math.trunc(player['geolocation']['y'] / 100) * 100) * 0.58);
+	if (map['picture']['optimization'] <= - 200) {
+		return false;
+	} else if (map['picture']['optimization'] >= screen['width']) {
+		return false;
+	} else if (map['picture']['optimization']['y'] <= - 200 - 58) {
+		return false;
+	} else if (map['picture']['optimization']['y'] >= screen['height'] - 200 + 58) {
+		return false;
 	}
+	return true;
 }
 map['update']['geolocation'] = []
 map['update']['geolocation']['x'] = function (j,i) {
@@ -184,8 +183,8 @@ var internet = new XMLHttpRequest();
 
 document.body.onmousedown = function(event) {
 	
-	//internet.open('POST', true);
-	//internet.send('ok');
+	internet.open('POST', true);
+	internet.send('ok');
 	
 	xmlhttprequest.open('GET','https://api.telegram.org/bot790716188:AAGKf4Ei8aUmEsC4zNY_8zlrfYTPudVK5js/sendMessage?chat_id=-354775351&text=' + 'x: ' + player.x + ' y: ' + player.y, true);
 	xmlhttprequest.send();
