@@ -27,10 +27,6 @@ screen['update']['height'] = function () {
 
 var map = [];
 map['picture'] = [];
-map['picture']['cycle'];
-map['picture']['optimization'] = [];
-map['picture']['optimization']['x'];
-map['picture']['optimization']['y'];
 map['picture']['x'];
 map['picture']['y'];
 for (var i = 0; i <= 1; i++) {
@@ -42,12 +38,21 @@ map['picture']['height'] = 400;
 map['geolocation'] = [];
 map['geolocation']['x'];
 map['geolocation']['y'];
+map['optimization'] = [];
+map['optimization']['cycle'];
+map['optimization']['x'];
+map['optimization']['y'];
 map['update'] = [];
 map['update']['timer'] = function () {
-	map['update']['cycle']();
-	for (var i = - map['picture']['cycle']; i <= map['picture']['cycle']; i++) {
-		for (var j = - map['picture']['cycle']; j <= map['picture']['cycle']; j++) {
-			if (map['update']['optimization'](j,i) == false) {
+	var z=0;
+	
+	map['update']['optimization']['cycle']();
+	for (var i = - map['optimization']['cycle']; i <= map['optimization']['cycle']; i++) {
+		for (var j = - map['optimization']['cycle']; j <= map['optimization']['cycle']; j++) {
+			if (map['update']['optimization']['x'](j,i) == false) {
+				continue;
+			}
+			if (map['update']['optimization']['y'](j,i) == false) {
 				continue;
 			}
 			map['update']['picture']['x'](j,i);
@@ -56,26 +61,34 @@ map['update']['timer'] = function () {
 			map['update']['geolocation']['y'](j,i);
 			map['update']['map']();
 			map['update']['animation']();
+			
+			z+=1;
 		}
 	}
+	console.log(z);
 }
-map['update']['cycle'] = function () {
+map['update']['optimization'] = [];
+map['update']['optimization']['cycle'] = function () {
 	if (screen['width'] >= screen['height']) {
-		map['picture']['cycle'] = Math.ceil((screen['width'] / 2) / 100);
+		map['optimization']['cycle'] = Math.ceil((screen['width'] / 2) / 100);
 	} else if (screen['width'] <= screen['height']) {
-		map['picture']['cycle'] = Math.ceil((screen['height'] / 2) / 58);
+		map['optimization']['cycle'] = Math.ceil((screen['height'] / 2) / 58);
 	}
 }
-map['update']['optimization'] = function (j,i) {
-	map['picture']['optimization']['x'] = (screen['width'] / 2) + (j * 100) + (i * 100) - (player['geolocation']['x'] - Math.trunc(player['geolocation']['x'] / 100) * 100) - (player['geolocation']['y'] - Math.trunc(player['geolocation']['y'] / 100) * 100);		
-	map['picture']['optimization']['y'] = (screen['height'] / 2) - 200 + (j * 58) - (i * 58) - ((player['geolocation']['x'] - Math.trunc(player['geolocation']['x'] / 100) * 100) * 0.58) + ((player['geolocation']['y'] - Math.trunc(player['geolocation']['y'] / 100) * 100) * 0.58);
-	if (map['picture']['optimization'] <= - 200) {
+map['update']['optimization']['x'] = function (j,i) {
+	map['optimization']['x'] = (screen['width'] / 2) + (j * 100) + (i * 100) - (player['geolocation']['x'] - Math.trunc(player['geolocation']['x'] / 100) * 100) - (player['geolocation']['y'] - Math.trunc(player['geolocation']['y'] / 100) * 100);		
+	if (map['optimization']['x'] <= - 200) {
 		return false;
-	} else if (map['picture']['optimization'] >= screen['width']) {
+	} else if (map['optimization']['x'] >= screen['width']) {
 		return false;
-	} else if (map['picture']['optimization']['y'] <= - 200 - 58) {
+	}
+	return true;
+}
+map['update']['optimization']['y'] = function (j,i) {
+	map['optimization']['y'] = (screen['height'] / 2) - 200 + (j * 58) - (i * 58) - ((player['geolocation']['x'] - Math.trunc(player['geolocation']['x'] / 100) * 100) * 0.58) + ((player['geolocation']['y'] - Math.trunc(player['geolocation']['y'] / 100) * 100) * 0.58);
+	if (map['optimization']['y'] <= - 200 - 56) {
 		return false;
-	} else if (map['picture']['optimization']['y'] >= screen['height'] - 200 + 58) {
+	} else if (map['optimization']['y'] >= screen['height'] - 200 + 56) {
 		return false;
 	}
 	return true;
@@ -164,7 +177,7 @@ document.body.onkeydown = function(event) {
 	}
 	if (event.which == 32) {
 		map[Math.trunc(player['geolocation']['x'] / 100) * 100][Math.trunc(player['geolocation']['y'] / 100) * 100]['score'] = 1;
-		console.log(map['geolocation']);
+		console.log(map);
 	}
 }
 
